@@ -5,7 +5,8 @@ namespace WebAPI_2025.Models.Entities
 {
     public class GuestHouse
     {
-        public int Id { get; set; }
+        [Key]
+        public int GuestHouseID { get; set; }
         public required string Name { get; set; }
         public required string Location { get; set; }
         public GH_Status Status { get; set; }

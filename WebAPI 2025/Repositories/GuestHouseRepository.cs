@@ -15,6 +15,7 @@ namespace WebAPI_2025.Repositories
         public async Task Create(GuestHouse guesthouse)
         {
             await _context.guestHouses.AddAsync(guesthouse);
+
             await _context.SaveChangesAsync();
         }
 
@@ -26,7 +27,7 @@ namespace WebAPI_2025.Repositories
 
         public async Task<GuestHouse?> Get(int id)
         {
-            return await _context.guestHouses.Where(x=>x.Id==id).FirstOrDefaultAsync();
+            return await _context.guestHouses.Where(x=>x.GuestHouseID==id).FirstOrDefaultAsync();
         }
 
         public async Task<List<GuestHouse>> GetAll()

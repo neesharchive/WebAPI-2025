@@ -8,5 +8,7 @@ namespace WebAPI_2025.Services
         public Task<GetGuestHouseDTO?> GetAsync(int id);
         public Task CreateAsync(AddGuestHouseDTO guesthouse);
         public void Delete(int id);
+        Task UpdateGuestHouseAsync(UpdateGuestHouseDTO dto);
+
     }
 }

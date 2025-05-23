@@ -47,6 +47,12 @@ namespace WebAPI_2025.Controllers
             _Service.Delete(id);
             return NoContent();
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdateGuestHouse(UpdateGuestHouseDTO dto)
+        {
+            await _Service.UpdateGuestHouseAsync(dto);
+            return NoContent();
+        }
 
     }
 }
