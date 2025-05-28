@@ -5,6 +5,7 @@ using WebAPI_2025.Models.Entities;
 using WebAPI_2025.DTOs.BedDTO;
 using WebAPI_2025.DTOs.RoomDTO;
 using WebAPI_2025.DTOs.BookingDTO;
+using WebAPI_2025.DTOs.UserDTO;
 namespace WebAPI_2025.Mappers
 {
     public class AutoMapperProfile:Profile
@@ -33,6 +34,8 @@ namespace WebAPI_2025.Mappers
             CreateMap<BookingDTO, Booking>()
                 .ForMember(dest => dest.BookingID, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+
+
 
         }
     }

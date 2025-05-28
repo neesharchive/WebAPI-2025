@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAPI_2025.Models.Entities;
 using WebAPI_2025.Models;
+using WebAPI_2025.Enums;
 namespace WebAPI_2025.Data
 {
     public class AppDbContext:DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options) { }
+        public DbSet<User> Users { get; set; }
         public DbSet<GuestHouse> guestHouses{ get; set; }
         public DbSet<Room> rooms { get; set; }
         public DbSet<Bed> beds { get; set; }
@@ -40,6 +42,7 @@ namespace WebAPI_2025.Data
                 .WithMany()
                 .HasForeignKey(b => b.UserID)
                 .OnDelete(DeleteBehavior.NoAction);
+
         }
 
     }

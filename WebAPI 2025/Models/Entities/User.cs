@@ -6,9 +6,13 @@ namespace WebAPI_2025.Models.Entities
     {
         [Key]
         public int UserID { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public Roles role { get; set; }
+        [Required]
+        public required string UserName { get; set; }
+        [Required]
+        public required string Password { get; set; }
+        [Required]
+        public required string Email { get; set; }
+        [Required]
+        public required Roles role { get; set; } = Roles.User;
     }
 }
