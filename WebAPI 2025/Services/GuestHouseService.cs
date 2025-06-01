@@ -152,7 +152,100 @@ namespace WebAPI_2025.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<string>> GetAllLocationsAsync()
+        {
+            return await _repo.GetAllLocationsAsync();
+        }
 
+        public async Task<List<GetGuestHouseDTO>> GetGuestHousesByLocationAsync(string location)
+        {
+            var guesthouses = await _repo.GetGuestHousesByLocationAsync(location);
+
+            if (guesthouses == null || guesthouses.Count == 0)
+                return new List<GetGuestHouseDTO>();
+
+            var dtoList = new List<GetGuestHouseDTO>();
+
+            foreach (var gh in guesthouses)
+            {
+                // Count number of rooms for this guest house
+                var rooms = await _context.rooms
+                    .Where(r => r.guesthouseID == gh.GuestHouseID)
+                    .ToListAsync();
+
+                int totalBeds = 0;
+                foreach (var room in rooms)
+                {
+                    totalBeds += await _context.beds.CountAsync(b => b.RoomID == room.RoomID);
+                }
+
+                dtoList.Add(new GetGuestHouseDTO
+                {
+                    GH_Name = gh.Name,
+                    GH_Location = gh.Location,
+                    Status = gh.Status,
+                    NumberOfRooms = rooms.Count,
+                    BedsPerRoom = rooms.FirstOrDefault()?.Capacity ?? 0,
+                    GuestHouseID=gh.GuestHouseID
+                }) ;
+            }
+
+            return dtoList;
+        }
+
+        public async Task<List<GetGuestHouseDTO>> GetAvailableGuestHousesByLocationAsync(string location, DateTime checkIn, DateTime checkOut)
+        {
+            var guesthouses = await _repo.GetGuestHousesByLocationAsync(location);
+            var availableGuestHouses = new List<GetGuestHouseDTO>();
+
+            foreach (var gh in guesthouses)
+            {
+                var rooms = await _context.rooms
+                    .Where(r => r.guesthouseID == gh.GuestHouseID)
+                    .ToListAsync();
+
+                bool hasAvailableRoom = false;
+
+                foreach (var room in rooms)
+                {
+                    var beds = await _context.beds
+                        .Where(b => b.RoomID == room.RoomID)
+                        .ToListAsync();
+
+                    foreach (var bed in beds)
+                    {
+                        bool isBooked = await _context.bookings.AnyAsync(book =>
+                            book.BedID == bed.BedID &&
+                            !(book.CheckOutDate <= checkIn || book.CheckInDate >= checkOut));
+
+                        if (!isBooked)
+                        {
+                            hasAvailableRoom = true;
+                            break;
+                        }
+                    }
+
+                    if (hasAvailableRoom) break;
+                }
+
+                if (hasAvailableRoom)
+                {
+                    availableGuestHouses.Add(new GetGuestHouseDTO
+                    {
+                        GH_Name = gh.Name,
+                        GH_Location = gh.Location,
+                        Status = gh.Status,
+                        NumberOfRooms = rooms.Count,
+                        BedsPerRoom = rooms.FirstOrDefault()?.Capacity ?? 0,
+                        GuestHouseID = gh.GuestHouseID
+                    });
+                }
+            }
+
+            return availableGuestHouses;
+        }
 
     }
+
+
 }

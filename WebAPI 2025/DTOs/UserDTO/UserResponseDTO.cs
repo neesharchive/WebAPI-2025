@@ -7,5 +7,6 @@ namespace WebAPI_2025.DTOs.UserDTO
     {
         public required string Token {  get; set; }
         public required string Role { get; set; }
+        public required int UserID { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace WebAPI_2025.Services
                 .Join(_appDbContext.rooms, bb => bb.bed.RoomID, room => room.RoomID, (bb, room) => new { bb.b, bb.bed, room })
                 .Join(_appDbContext.guestHouses, bbr => bbr.room.guesthouseID, gh => gh.GuestHouseID, (bbr, gh) => new BookingDTO
                 {
-                    BookingID = bbr.b.BedID,
+                    BookingID = bbr.b.BookingID,
                     UserID = bbr.b.UserID,
                     BedID = bbr.b.BedID,
                     CheckInDate = bbr.b.CheckInDate,
@@ -75,7 +75,7 @@ namespace WebAPI_2025.Services
                 .Join(_appDbContext.rooms, bb => bb.bed.RoomID, room => room.RoomID, (bb, room) => new { bb.b, bb.bed, room })
                 .Join(_appDbContext.guestHouses, bbr => bbr.room.guesthouseID, gh => gh.GuestHouseID, (bbr, gh) => new BookingDTO
                 {
-                    BookingID = bbr.b.BedID,
+                    BookingID = bbr.b.BookingID,
                     UserID = bbr.b.UserID,
                     BedID = bbr.b.BedID,
                     CheckInDate = bbr.b.CheckInDate,
@@ -100,7 +100,7 @@ namespace WebAPI_2025.Services
                .Join(_appDbContext.rooms, bb => bb.bed.RoomID, room => room.RoomID, (bb, room) => new { bb.b, bb.bed, room })
                .Join(_appDbContext.guestHouses, bbr => bbr.room.guesthouseID, gh => gh.GuestHouseID, (bbr, gh) => new BookingDTO
                {
-                   BookingID = bbr.b.BedID,
+                   BookingID = bbr.b.BookingID,
                    UserID = bbr.b.UserID,
                    BedID = bbr.b.BedID,
                    CheckInDate = bbr.b.CheckInDate,
@@ -129,5 +129,15 @@ namespace WebAPI_2025.Services
                 entity.Gender = booking.Gender;
             };
         }
+        public async Task<bool> UpdateStatus(int bookingId, BookingStatus status)
+        {
+            var booking = await _appDbContext.bookings.FindAsync(bookingId);
+            if (booking == null) return false;
+
+            booking.Status = status;
+            await _appDbContext.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

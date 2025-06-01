@@ -18,6 +18,7 @@ namespace WebAPI_2025.Mappers
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
 
             CreateMap<GuestHouse,GetGuestHouseDTO>()
+                .ForMember(dest=>dest.GuestHouseID,opt=>opt.MapFrom(src=>src.GuestHouseID))
                 .ForMember(dest => dest.GH_Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.GH_Location, opt => opt.MapFrom(src => src.Location))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));

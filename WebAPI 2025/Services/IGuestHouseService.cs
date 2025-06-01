@@ -9,6 +9,9 @@ namespace WebAPI_2025.Services
         public Task CreateAsync(AddGuestHouseDTO guesthouse);
         public void Delete(int id);
         Task UpdateGuestHouseAsync(UpdateGuestHouseDTO dto);
-
+        Task<List<string>> GetAllLocationsAsync();
+        Task<List<GetGuestHouseDTO>> GetGuestHousesByLocationAsync(string location);
+        Task<List<GetGuestHouseDTO>> GetAvailableGuestHousesByLocationAsync(string location, DateTime checkIn, DateTime checkOut);
+        
     }
 }

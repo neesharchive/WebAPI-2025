@@ -1,4 +1,5 @@
 ﻿using WebAPI_2025.DTOs.BookingDTO;
+using WebAPI_2025.Enums;
 using WebAPI_2025.Models.Entities;
 
 namespace WebAPI_2025.Services
@@ -11,6 +12,7 @@ namespace WebAPI_2025.Services
         public void Delete(int id);
         public Task<List<BookingDTO>> GetAll();
         public void Update(int id, BookingDTO booking);
+        Task<bool> UpdateStatus(int bookingId, BookingStatus status);
 
     }
 }

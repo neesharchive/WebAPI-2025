@@ -8,5 +8,7 @@ namespace WebAPI_2025.Repositories
         public Task<GuestHouse?>Get(int id);
         public Task Create(GuestHouse guesthouse);
         public void Delete(GuestHouse guestHouse);
+        Task<List<string>> GetAllLocationsAsync();
+        Task<List<GuestHouse>> GetGuestHousesByLocationAsync(string location);
     }
 }

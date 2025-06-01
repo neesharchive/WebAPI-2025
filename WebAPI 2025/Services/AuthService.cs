@@ -28,7 +28,9 @@ namespace WebAPI_2025.Services
             return new UserResponseDTO
             {
                 Token = token,
-                Role = user.role.ToString()
+                Role = user.role.ToString(),
+                UserID=user.UserID
+
             };
         }
 
@@ -38,7 +40,9 @@ namespace WebAPI_2025.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, user.role.ToString())
+                new Claim(ClaimTypes.Role, user.role.ToString()),
+                new Claim("userID", user.UserID.ToString())
+
             };
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

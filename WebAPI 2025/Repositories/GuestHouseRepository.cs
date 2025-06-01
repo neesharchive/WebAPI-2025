@@ -34,6 +34,21 @@ namespace WebAPI_2025.Repositories
         {
             return await _context.guestHouses.ToListAsync();
         }
+        public async Task<List<string>> GetAllLocationsAsync()
+        {
+            return await _context.guestHouses
+                .Select(gh => gh.Location)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        public async Task<List<GuestHouse>> GetGuestHousesByLocationAsync(string location)
+        {
+            return await _context.guestHouses
+                .Where(gh => gh.Location.ToLower() == location.ToLower())
+                .ToListAsync();
+        }
+
     }
 }
   

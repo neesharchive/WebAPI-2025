@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI_2025.DTOs.RoomDTO;
+using WebAPI_2025.Models.Wrappers;
 using WebAPI_2025.Services;
 
 namespace WebAPI_2025.Controllers
@@ -18,14 +20,35 @@ namespace WebAPI_2025.Controllers
         [HttpGet("guesthouse/{GID}")]
         public async Task<IActionResult> GetRoomsByGuestHouseID(int GID)
         {
-            var rooms = await _Service.GetRoomByGuesthouseID(GID);
-            return Ok(new { count = rooms.Count, rooms });
+            try
+            {
+                var rooms = await _Service.GetRoomByGuesthouseID(GID);
+                return Ok(new APIResponse<List<GetAvailableRoomDTO>>(
+                    true,
+                    $"Fetched {rooms.Count} rooms for GuestHouse ID {GID}",
+                    rooms));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse<string>(false, $"Error: {ex.Message}"));
+            }
         }
+
         [HttpGet("available")]
         public async Task<IActionResult> GetAvailableRooms(int guestHouseId, DateTime checkin, DateTime checkout)
         {
-            var rooms = await _Service.GetAvailableRooms(guestHouseId, checkin, checkout);
-            return Ok(rooms);
+            try
+            {
+                var rooms = await _Service.GetAvailableRooms(guestHouseId, checkin, checkout);
+                return Ok(new APIResponse<List<GetAvailableRoomDTO>>(
+                    true,
+                    $"Available rooms between {checkin:yyyy-MM-dd} and {checkout:yyyy-MM-dd}",
+                    rooms));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse<string>(false, $"Error: {ex.Message}"));
+            }
         }
     }
 }
