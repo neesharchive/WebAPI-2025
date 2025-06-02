@@ -13,10 +13,13 @@ namespace WebAPI_2025.Services
     {
         private readonly IBookingRepository _repository;
         private readonly AppDbContext _appDbContext;
-        public BookingService(IBookingRepository bookingRepository, AppDbContext appDbContext)
+        private readonly IEmailService _emailService;
+        public BookingService(IBookingRepository bookingRepository, AppDbContext appDbContext, IEmailService emailService)
         {
             _repository = bookingRepository;
             _appDbContext = appDbContext;
+            _emailService = emailService;
+
         }
         public async Task Create(BookingDTO booking)
         {
@@ -30,6 +33,41 @@ namespace WebAPI_2025.Services
                 Gender = booking.Gender
             };
             await _repository.Create(entitiy);
+            try
+            {
+                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.UserID == booking.UserID);
+                var bed = await _appDbContext.beds.FirstOrDefaultAsync(b => b.BedID == booking.BedID);
+
+                if (bed != null)
+                {
+                    var room = await _appDbContext.rooms.FirstOrDefaultAsync(r => r.RoomID == bed.RoomID);
+                    if (room != null)
+                    {
+                        var guestHouse = await _appDbContext.guestHouses.FirstOrDefaultAsync(g => g.GuestHouseID == room.guesthouseID);
+                        if (user != null && guestHouse != null)
+                        {
+                            string subject = "New Booking Request";
+                            string body = $@"
+                    <p>User <strong>{user.UserName}</strong> has submitted a booking request.</p>
+                    <ul>
+                        <li>Guest House: {guestHouse.Name} ({guestHouse.Location})</li>
+                        <li>Room: {room.RoomNumber}, Bed: {bed.BedNumber}</li>
+                        <li>Check-In: {booking.CheckInDate:yyyy-MM-dd}</li>
+                        <li>Check-Out: {booking.CheckoutDate:yyyy-MM-dd}</li>
+                        <li>Purpose: {booking.Purpose}</li>
+                    </ul>";
+
+                            await _emailService.SendEmailAsync($"{user.Email}", subject, body);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error if needed, but do NOT throw
+                Console.WriteLine($"[Email Error] Could not send admin booking notification: {ex.Message}");
+            }
+
         }
 
         public void Delete(int id)
@@ -136,6 +174,22 @@ namespace WebAPI_2025.Services
 
             booking.Status = status;
             await _appDbContext.SaveChangesAsync();
+            //var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.UserID == booking.UserID);
+            //var bed = await _appDbContext.beds.FirstOrDefaultAsync(b => b.BedID == booking.BedID);
+            //var room = await _appDbContext.rooms.FirstOrDefaultAsync(r => r.RoomID == bed.RoomID);
+            //var guestHouse = await _appDbContext.guestHouses.FirstOrDefaultAsync(g => g.GuestHouseID == room.guesthouseID);
+
+            //if (user != null && bed != null && room != null && guestHouse != null)
+            //{
+            //    string subject = "Your Booking Status Was Updated";
+            //    string body = $@"
+            //<p>Dear {user.UserName},</p>
+            //<p>Your booking at <strong>{guestHouse.Name}</strong> (Room {room.RoomNumber}, Bed {bed.BedNumber}) 
+            //from {booking.CheckInDate:yyyy-MM-dd} to {booking.CheckOutDate:yyyy-MM-dd} has been <strong>{status}</strong>.</p>";
+
+            //    await _emailService.SendEmailAsync(user.Email, subject, body);
+            //}
+
             return true;
         }
 

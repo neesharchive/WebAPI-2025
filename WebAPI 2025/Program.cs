@@ -18,6 +18,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
+
+
 builder.Services.AddScoped<IGuestHouseRepository, GuestHouseRepository>();
 builder.Services.AddScoped<IGuestHouseService, GuestHouseService>();
 
