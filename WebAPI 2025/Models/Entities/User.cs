@@ -7,12 +7,15 @@ namespace WebAPI_2025.Models.Entities
         [Key]
         public int UserID { get; set; }
         [Required]
-        public required string UserName { get; set; }
+        public string UserName { get; set; }=string.Empty;
         [Required]
-        public required string Password { get; set; }
+        public string Password { get; set; }=string.Empty;
         [Required]
-        public required string Email { get; set; }
+        public string Email { get; set; }=string.Empty;
         [Required]
-        public required Roles role { get; set; } = Roles.User;
+        public Roles role { get; set; } = Roles.User;
+        public string? PasswordResetToken { get; set; }
+
+        public DateTime? TokenExpiryTime { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI_2025.Data;
 
@@ -11,9 +12,11 @@ using WebAPI_2025.Data;
 namespace WebAPI_2025.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603111537_entity_seeded")]
+    partial class entity_seeded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,12 +161,6 @@ namespace WebAPI_2025.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordResetToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("TokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -180,7 +177,7 @@ namespace WebAPI_2025.Migrations
                         {
                             UserID = 1,
                             Email = "nishantbhatt393@gmail.com",
-                            Password = "AQAAAAIAAYagAAAAEKw3Us5ILJCY43E6doh64QXyv7qvYLzbbSFRoBzBzvDA4p+IsjKRGX3p//7cRquWYA==",
+                            Password = "AQAAAAIAAYagAAAAEA13CAUtTLZrhRw6nTmcp3LL4PHM0gp/LUcz/NyWr97c70sX9Gs+4ehwSOT6oQVE/g==",
                             UserName = "admin",
                             role = 1
                         },
@@ -188,7 +185,7 @@ namespace WebAPI_2025.Migrations
                         {
                             UserID = 2,
                             Email = "nab5996@psu.com",
-                            Password = "AQAAAAIAAYagAAAAEEhXXzRBNW0LiTx+3nyVMY1J1guqumtMR8fQ6ibYW2YJp57Ukpr8/w1EpHO3H7ihPA==",
+                            Password = "AQAAAAIAAYagAAAAEKMPELeXa1nM00ByPNUuEjw3lkBAmoNDO8ybyh+H6xs7MB9/vrhSDyfNJ/rn/XBqjg==",
                             UserName = "user",
                             role = 2
                         });

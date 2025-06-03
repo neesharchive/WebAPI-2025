@@ -34,7 +34,12 @@ builder.Services.AddScoped<IBedService,  BedService>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 
-builder.Services.AddScoped<IGetUser, GetUser>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
+builder.Services.AddScoped<IGetUserRepositoroy, GetUserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddCors(options =>
 {

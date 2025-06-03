@@ -2,6 +2,7 @@
 using WebAPI_2025.Models.Entities;
 using WebAPI_2025.Models;
 using WebAPI_2025.Enums;
+using Microsoft.AspNetCore.Identity;
 namespace WebAPI_2025.Data
 {
     public class AppDbContext:DbContext
@@ -15,35 +16,57 @@ namespace WebAPI_2025.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // GuestHouse -> Room (Cascade delete)
+            base.OnModelCreating(modelBuilder);
+
+            // Cascade delete relationships (unchanged)
             modelBuilder.Entity<Room>()
                 .HasOne<GuestHouse>()
                 .WithMany()
                 .HasForeignKey(r => r.guesthouseID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Room -> Bed (Cascade delete)
             modelBuilder.Entity<Bed>()
                 .HasOne<Room>()
                 .WithMany()
                 .HasForeignKey(b => b.RoomID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Bed -> Booking (No cascade, just FK)
             modelBuilder.Entity<Booking>()
                 .HasOne<Bed>()
                 .WithMany()
                 .HasForeignKey(b => b.BedID)
-                .OnDelete(DeleteBehavior.NoAction); // optional safety
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Optional: Booking -> User FK
             modelBuilder.Entity<Booking>()
-                .HasOne<User>() 
+                .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(b => b.UserID)
                 .OnDelete(DeleteBehavior.NoAction);
 
+
+            var hasher = new PasswordHasher<User>();
+
+            var adminUser = new User
+            {
+                UserID = 1,
+                UserName = "admin",
+                Email = "nishantbhatt393@gmail.com",
+                role = Enums.Roles.Admin
+            };
+            adminUser.Password = hasher.HashPassword(adminUser, "admin123");
+
+            var normalUser = new User
+            {
+                UserID = 2,
+                UserName = "user",
+                Email = "nab5996@psu.com",
+                role = Enums.Roles.User
+            };
+            normalUser.Password = hasher.HashPassword(normalUser, "user123");
+
+            modelBuilder.Entity<User>().HasData(adminUser, normalUser);
         }
+
 
     }
 }
