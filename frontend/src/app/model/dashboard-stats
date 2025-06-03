@@ -1,0 +1,7 @@
+export interface DashboardStats {
+  availableRooms: number;
+  reservations: number;
+  pendingRequests: number;
+  checkIns: number;
+  checkOuts: number;
+}

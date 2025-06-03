@@ -1,0 +1,60 @@
+<mat-horizontal-stepper linear>
+  <!-- Step 1 -->
+  <mat-step [stepControl]="modeForm">
+    <form [formGroup]="modeForm">
+      <ng-template matStepLabel>Action</ng-template>
+      <mat-radio-group formControlName="action">
+        <mat-radio-button value="new">Create New Guest House</mat-radio-button>
+      </mat-radio-group>
+      <div>
+        <button mat-button matStepperNext [disabled]="!modeForm.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 2 -->
+  <mat-step [stepControl]="detailsForm">
+    <form [formGroup]="detailsForm">
+      <ng-template matStepLabel>Details</ng-template>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Guest House Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Location</mat-label>
+        <mat-select formControlName="location">
+          <mat-option *ngFor="let loc of locations" [value]="loc">{{ loc }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="!detailsForm.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 3 -->
+  <mat-step [stepControl]="configForm">
+    <form [formGroup]="configForm">
+      <ng-template matStepLabel>Room & Bed Setup</ng-template>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Number of Rooms</mat-label>
+        <input matInput type="number" formControlName="numberOfRooms" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Beds per Room</mat-label>
+        <input matInput type="number" formControlName="bedsPerRoom" />
+      </mat-form-field>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" [disabled]="!configForm.valid" (click)="onSubmit()">Create</button>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>

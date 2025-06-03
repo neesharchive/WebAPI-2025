@@ -1,0 +1,23 @@
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.booking-card {
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 30px;
+  color: #888;
+}
+
+.no-data mat-icon {
+  vertical-align: middle;
+  font-size: 30px;
+  margin-right: 8px;
+}

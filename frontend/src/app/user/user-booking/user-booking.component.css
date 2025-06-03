@@ -1,0 +1,68 @@
+.booking-wrapper {
+  padding: 0 40px;
+  margin-top: -20px; /* remove gap under navbar */
+}
+
+.booking-card {
+  padding: 24px 32px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #1e293b;
+}
+
+.booking-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.mat-form-field {
+  width: 100%;
+  font-size: 14px;
+}
+
+input.mat-input-element,
+.mat-select-trigger {
+  height: 40px;
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+/* Make date range input compact */
+mat-date-range-input input {
+  height: 20px;
+}
+
+.mat-radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  grid-column: span 2;
+  margin-top: 8px;
+}
+
+.mat-checkbox {
+  margin-top: 8px;
+  grid-column: span 2;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  grid-column: span 2;
+}
+
+button {
+  min-width: 100px;
+  height: 36px;
+  font-size: 14px;
+}

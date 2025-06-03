@@ -1,0 +1,22 @@
+<!-- Notifier overlay container -->
+<notifier-container></notifier-container>
+
+<!-- Always-fixed top navbar -->
+<app-header></app-header>
+
+<!-- Sidenav layout starts below header -->
+
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav #drawer mode="side" [(opened)]="sidebarOpened" class="sidenav">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+    <footer class="footer">
+      &copy; 2025 Roomy. All rights reserved.
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

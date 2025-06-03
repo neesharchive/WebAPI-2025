@@ -1,0 +1,49 @@
+.dialog-title {
+    margin-left:50px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1e293b;
+}
+
+.edit-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-row mat-form-field {
+  flex: 1 1 30%;
+  min-width: 180px;
+}
+
+.full-width mat-form-field {
+  width: 100%;
+}
+
+.radio-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.align-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.actions {
+  justify-content: flex-end;
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}

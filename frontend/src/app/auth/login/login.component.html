@@ -1,0 +1,68 @@
+<div class="login-wrapper">
+  <mat-card class="login-card mat-elevation-z4">
+    <div class="logo-area">
+      <img src="assets/images/roomy-logo.png" alt="Roomy Logo" class="logo-img" />
+    </div>
+
+    <h2 class="title">Welcome to Roomy</h2>
+
+    <!-- 🔁 Forgot Password UI -->
+    <div *ngIf="forgotMode; else loginTemplate">
+      <p style="margin-bottom: 16px; font-size: 14px; color: #555;">
+        Enter your registered email and we'll send you a password reset link.
+      </p>
+
+      <form [formGroup]="forgotForm" (ngSubmit)="sendResetLink()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" />
+          <mat-error *ngIf="forgotForm.get('email')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="forgotForm.get('email')?.hasError('email')">Enter a valid email</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="forgotForm.invalid">
+          Send Reset Link
+        </button>
+      </form>
+
+      <br />
+
+      <button mat-button (click)="toggleForgotMode()">← Back to Login</button>
+    </div>
+
+    <!-- 🔐 Login UI -->
+    <ng-template #loginTemplate>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" autocomplete="off" />
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+            Username is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <div class="forgot-link" style="margin-bottom: 16px;">
+          <a (click)="toggleForgotMode()" style="cursor: pointer;">Forgot Password?</a>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="login-btn"
+          [disabled]="loginForm.invalid || loading"
+          type="submit"
+        >
+          {{ loading ? 'Logging in...' : 'Log In' }}
+        </button>
+      </form>
+    </ng-template>
+  </mat-card>
+</div>

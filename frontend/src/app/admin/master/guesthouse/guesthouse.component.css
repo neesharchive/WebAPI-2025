@@ -1,0 +1,12 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-horizontal-stepper {
+  margin-top: 20px;
+}
+
+mat-form-field{
+    margin-top: 5px;
+}

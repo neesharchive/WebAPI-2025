@@ -1,0 +1,66 @@
+<!-- 5 DASHBOARD STAT CARDS -->
+<div class="stat-card-row">
+  <mat-card class="stat-card" *ngFor="let stat of stats">
+    <div class="stat-header">
+      <div class="stat-label">{{ stat.label }}</div>
+      <div class="stat-date">{{ currentDate }}</div>
+    </div>
+    <div class="stat-body">
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-icon">
+        <mat-icon>{{ stat.icon }}</mat-icon>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<mat-card class="bed-stats-card">
+  <div class="bed-stats-header">
+    <div class="bed-stats-title">
+      <h3>Total Beds</h3>
+      <small>
+        Showing stats for
+        <ng-container *ngIf="bedStatsDisplayLabel; else todayDefault">
+          {{ bedStatsDisplayLabel }}
+        </ng-container>
+        <ng-template #todayDefault>Today ({{ currentDate }})</ng-template>
+      </small>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date Range</mat-label>
+      <mat-date-range-input [formGroup]="bedStatsRangeGroup" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date" />
+        <input matEndDate formControlName="end" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <button mat-icon-button color="primary" (click)="resetDateRange()" aria-label="Reset to Today">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <div class="bed-stats-grid">
+    <mat-card class="bed-stat available">
+      <h4>Available</h4>
+      <p>{{ bedStats.availableBeds }}</p>
+    </mat-card>
+
+    <mat-card class="bed-stat occupied">
+      <h4>Occupied</h4>
+      <p>{{ bedStats.occupiedBeds }}</p>
+    </mat-card>
+
+    <mat-card class="bed-stat checkins">
+      <h4>Check-ins</h4>
+      <p>{{ bedStats.checkIns }}</p>
+    </mat-card>
+
+    <mat-card class="bed-stat nights">
+      <h4>Total Nights</h4>
+      <p>{{ bedStats.totalNights }}</p>
+    </mat-card>
+  </div>
+</mat-card>

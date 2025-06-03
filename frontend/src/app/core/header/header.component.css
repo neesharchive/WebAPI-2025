@@ -1,0 +1,66 @@
+/* Fixed top navbar */
+.topbar {
+  height: 64px;
+  background-color: #1a89c0; /* same blue as rest of theme */
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* App title text */
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 12px;
+}
+
+/* Spacer between title and user avatar */
+.spacer {
+  flex: 1;
+}
+
+
+
+/* Profile image */
+.avatar {
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Username text */
+.username {
+  font-weight: 500;
+  font-size: 14px;
+  margin-right: 12px;
+  color: white;
+  vertical-align: middle;
+}
+
+/* Logout circular button */
+.logout-circle {
+  background-color: #5f51ef;
+  color: white;
+  border-radius: 50%;
+  padding: 6px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  margin-left: 4px;
+}
+
+.logout-circle:hover {
+  background-color: #463cd1;
+}
