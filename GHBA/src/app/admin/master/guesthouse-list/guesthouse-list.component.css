@@ -1,0 +1,22 @@
+.status-active {
+  color: green;
+  font-weight: 500;
+}
+
+.status-inactive {
+  color: red;
+  font-weight: 500;
+}
+.full-width-table {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+}
+
+.mat-cell {
+  vertical-align: middle;
+}

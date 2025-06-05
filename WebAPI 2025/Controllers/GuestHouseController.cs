@@ -75,7 +75,7 @@ namespace WebAPI_2025.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGuestHouse(UpdateGuestHouseDTO dto)
         {
             try

@@ -82,6 +82,7 @@ namespace WebAPI_2025.Services
                 var dto = _mapper.Map<GetGuestHouseDTO>(gh);
                 dto.NumberOfRooms = numberOfRooms;
                 dto.BedsPerRoom = bedsPerRoom;
+                dto.Location = gh.Location;
 
                 dtos.Add(dto);
             }
@@ -116,38 +117,7 @@ namespace WebAPI_2025.Services
             if (guesthouse == null) return;
 
             guesthouse.Status = dto.Status;
-
-            // Get existing rooms
-            var existingRooms = await _context.rooms
-                .Where(r => r.guesthouseID == guesthouse.GuestHouseID)
-                .ToListAsync();
-
-            int currentRooms = existingRooms.Count;
-
-            if (dto.NumberOfRooms > currentRooms)
-            {
-                // Add new rooms and beds
-                for (int i = currentRooms + 1; i <= dto.NumberOfRooms; i++)
-                {
-                    var room = new Room
-                    {
-                        RoomNumber = i,
-                        Capacity = dto.BedsPerRoom,
-                        guesthouseID = guesthouse.GuestHouseID
-                    };
-                    await _context.rooms.AddAsync(room);
-                    await _context.SaveChangesAsync(); // To get RoomID
-
-                    for (int j = 1; j <= dto.BedsPerRoom; j++)
-                    {
-                        await _context.beds.AddAsync(new Bed
-                        {
-                            BedNumber = j,
-                            RoomID = room.RoomID
-                        });
-                    }
-                }
-            }
+            guesthouse.Name = dto.Name;
 
             await _context.SaveChangesAsync();
         }
@@ -181,8 +151,8 @@ namespace WebAPI_2025.Services
 
                 dtoList.Add(new GetGuestHouseDTO
                 {
-                    GH_Name = gh.Name,
-                    GH_Location = gh.Location,
+                    Name = gh.Name,
+                    Location = gh.Location,
                     Status = gh.Status,
                     NumberOfRooms = rooms.Count,
                     BedsPerRoom = rooms.FirstOrDefault()?.Capacity ?? 0,
@@ -232,8 +202,8 @@ namespace WebAPI_2025.Services
                 {
                     availableGuestHouses.Add(new GetGuestHouseDTO
                     {
-                        GH_Name = gh.Name,
-                        GH_Location = gh.Location,
+                        Name = gh.Name,
+                        Location = gh.Location,
                         Status = gh.Status,
                         NumberOfRooms = rooms.Count,
                         BedsPerRoom = rooms.FirstOrDefault()?.Capacity ?? 0,

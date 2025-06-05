@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAPI_2025.Data;
-using WebAPI_2025.Data.DashboardDTO;
+using WebAPI_2025.DTOs.DashboardDTO;
 using WebAPI_2025.Enums;
 using WebAPI_2025.Models.Wrappers;
 

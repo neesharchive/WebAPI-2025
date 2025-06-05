@@ -1,4 +1,4 @@
-﻿using WebAPI_2025.Data.DashboardDTO;
+﻿using WebAPI_2025.DTOs.DashboardDTO;
 using WebAPI_2025.Models.Wrappers;
 
 namespace WebAPI_2025.Services

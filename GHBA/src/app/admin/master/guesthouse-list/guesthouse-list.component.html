@@ -1,0 +1,68 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
+
+  <!-- Sr. No -->
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> Sr. No </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <!-- Name -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element">
+      <ng-container *ngIf="element.isEditing; else nameView">
+        <input matInput [(ngModel)]="element.editedName" />
+      </ng-container>
+      <ng-template #nameView>{{ element.name }}</ng-template>
+    </td>
+  </ng-container>
+
+  <!-- Location -->
+  <ng-container matColumnDef="location">
+    <th mat-header-cell *matHeaderCellDef> Location </th>
+    <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+  </ng-container>
+
+  <!-- Rooms -->
+  <ng-container matColumnDef="numberOfRooms">
+    <th mat-header-cell *matHeaderCellDef> Rooms </th>
+    <td mat-cell *matCellDef="let element"> {{element.numberOfRooms}} </td>
+  </ng-container>
+
+  <!-- Beds/Room -->
+  <ng-container matColumnDef="bedsPerRoom">
+    <th mat-header-cell *matHeaderCellDef> Beds/Room </th>
+    <td mat-cell *matCellDef="let element"> {{element.bedsPerRoom}} </td>
+  </ng-container>
+
+  <!-- Status -->
+  <ng-container matColumnDef="statusText">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <td mat-cell *matCellDef="let element">
+      <ng-container *ngIf="element.isEditing; else statusView">
+        <button mat-button (click)="toggleStatus(element)">
+          {{ element.editedStatus === 1 ? 'Active' : 'Inactive' }}
+        </button>
+      </ng-container>
+      <ng-template #statusView>{{ element.statusText }}</ng-template>
+    </td>
+  </ng-container>
+
+  <!-- Actions -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element">
+      <ng-container *ngIf="!element.isEditing">
+        <button mat-stroked-button color="primary" (click)="enableEdit(element)">Edit</button>
+        <button mat-stroked-button color="warn">Delete</button>
+      </ng-container>
+      <ng-container *ngIf="element.isEditing">
+        <button mat-button color="accent" (click)="saveEdit(element)">Save</button>
+        <button mat-button (click)="cancelEdit(element)">Cancel</button>
+      </ng-container>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
