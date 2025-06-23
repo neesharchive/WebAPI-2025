@@ -1,22 +1,24 @@
-<!-- Notifier overlay container -->
+<!-- app.component.html -->
+
 <notifier-container></notifier-container>
 
-<!-- Always-fixed top navbar -->
+<!-- Top fixed header -->
 <app-header></app-header>
 
-<!-- Sidenav layout starts below header -->
+<!-- Layout body (below header) -->
+<div class="layout-body">
+  <mat-sidenav-container class="layout-container">
+    <mat-sidenav #drawer mode="side" [(opened)]="sidebarOpened" class="sidenav">
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
 
-<mat-sidenav-container class="layout-container">
-  <mat-sidenav #drawer mode="side" [(opened)]="sidebarOpened" class="sidenav">
-    <app-sidebar></app-sidebar>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <div class="main-content">
-      <router-outlet></router-outlet>
-    </div>
-    <footer class="footer">
-      &copy; 2025 Roomy. All rights reserved.
-    </footer>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <mat-sidenav-content>
+      <div class="main-content">
+        <router-outlet></router-outlet>
+        <footer class="footer">
+          &copy; 2025 Roomy. All rights reserved.
+        </footer>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

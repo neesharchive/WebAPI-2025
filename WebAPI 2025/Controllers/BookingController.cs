@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI_2025.DTOs.BookingDTO;
 using WebAPI_2025.Enums;
@@ -12,10 +13,12 @@ namespace WebAPI_2025.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _Service;
+
         public BookingController(IBookingService bookingService)
         {
             _Service = bookingService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(BookingDTO DTO)
         {
@@ -29,7 +32,6 @@ namespace WebAPI_2025.Controllers
                 return StatusCode(500, new APIResponse<string>(false, $"Error while creating booking: {ex.Message}"));
             }
         }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -76,12 +78,22 @@ namespace WebAPI_2025.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] BookingUpdateDTO booking)
+        {
+            if (booking == null || booking.BookingID != id)
+                return BadRequest("Invalid booking data.");
+
+            await _Service.Update(id, booking);
+            return Ok(new APIResponse<string> { Success = true, Message = "Booking updated." });
+        }
+
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _Service.Delete(id);
+                await _Service.Delete(id);
                 return Ok(new APIResponse<string>(true, "Booking deleted successfully"));
             }
             catch (Exception ex)
@@ -96,7 +108,6 @@ namespace WebAPI_2025.Controllers
             if (success) return Ok(new APIResponse<string>(true, "Booking approved"));
             return NotFound(new APIResponse<string>(false, "Booking not found"));
         }
-
         [HttpPut("reject/{id}")]
         public async Task<IActionResult> Reject(int id)
         {
@@ -104,19 +115,21 @@ namespace WebAPI_2025.Controllers
             if (success) return Ok(new APIResponse<string>(true, "Booking rejected"));
             return NotFound(new APIResponse<string>(false, "Booking not found"));
         }
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/status")]
-        public IActionResult UpdateStatus(int id, [FromQuery] BookingStatus status)
+        public async Task<IActionResult> UpdateStatus(int id, [FromQuery] BookingStatus status)
         {
             try
             {
-                _Service.UpdateStatus(id, status);
-                return Ok(new APIResponse<string>(true, "Booking status updated"));
+                var success = await _Service.UpdateStatus(id, status);
+                if (success)
+                    return Ok(new APIResponse<string>(true, "Booking status updated"));
+                return NotFound(new APIResponse<string>(false, "Booking not found"));
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new APIResponse<string>(false, $"Update failed: {ex.Message}"));
             }
         }
-
     }
 }

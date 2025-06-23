@@ -21,7 +21,6 @@ namespace WebAPI_2025.Services
             _repo = repo;
             _configuration = configuration;
             _emailService = emailService;
-
         }
 
         public async Task<UserResponseDTO?> Login(LoginDTO loginDTO)
@@ -31,7 +30,9 @@ namespace WebAPI_2025.Services
 
             var hasher = new PasswordHasher<User>();
             var result = hasher.VerifyHashedPassword(user, user.Password, loginDTO.Password);
-            if (result != PasswordVerificationResult.Success) return null;
+
+            if (result != PasswordVerificationResult.Success)
+                return null;
 
             var token = GenerateJwt(user);
             return new UserResponseDTO
@@ -44,7 +45,7 @@ namespace WebAPI_2025.Services
 
         public async Task<bool> RequestPasswordReset(string email)
         {
-            var user = await _repo.GetUserByEmail(email); // ✅ you'll need this new method
+            var user = await _repo.GetUserByEmail(email);
             if (user == null) return false;
 
             user.PasswordResetToken = Guid.NewGuid().ToString();
@@ -52,14 +53,11 @@ namespace WebAPI_2025.Services
             await _repo.SaveChangesAsync();
 
             var resetLink = $"http://localhost:4200/login/reset-password?token={user.PasswordResetToken}";
-            var emailBody = $@"
-        <p>Hello {user.UserName},</p>
-        <p>Click <a href='{resetLink}'>here</a> to reset your password.</p>";
+            var emailBody = BuildEmailTemplate(user.UserName, resetLink, "Reset Your Password", "We received a request to reset your password. Click the button below to continue.");
 
-            await _emailService.SendEmailAsync(user.Email, "Reset Your Password", emailBody);
+            _emailService.SendEmailInBackground(user.Email, "Reset Your Password", emailBody);
             return true;
         }
-
 
         public async Task<bool> ResetPassword(string token, string newPassword)
         {
@@ -81,6 +79,7 @@ namespace WebAPI_2025.Services
 
             var hasher = new PasswordHasher<User>();
             var result = hasher.VerifyHashedPassword(user, user.Password, currentPassword);
+
             if (result != PasswordVerificationResult.Success) return false;
 
             user.Password = hasher.HashPassword(user, newPassword);
@@ -111,5 +110,20 @@ namespace WebAPI_2025.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        private string BuildEmailTemplate(string userName, string actionLink, string title, string message)
+        {
+            return $@"
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>
+                    <h2 style='color: #2E86C1;'>{title}</h2>
+                    <p>Hello <strong>{userName}</strong>,</p>
+                    <p>{message}</p>
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <a href='{actionLink}' style='background-color: #2E86C1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Reset Password</a>
+                    </div>
+                    <p style='font-size: 0.9em; color: #555;'>If you didn’t request this, please ignore this email.</p>
+                    <hr />
+                    <p style='font-size: 0.8em; color: #999;'>WebAPI 2025 Team</p>
+                </div>";
+        }
     }
 }

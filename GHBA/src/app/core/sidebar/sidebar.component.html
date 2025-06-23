@@ -1,24 +1,25 @@
 <div class="sidebar-content">
   <h3 class="logo">Roomy</h3>
 
+  <!-- Admin Nav -->
   <nav *ngIf="role === 'Admin'">
     <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
     <a routerLink="/admin/pending-requests" routerLinkActive="active">Pending Requests</a>
+    <a routerLink="/admin/booking-report" routerLinkActive="active">Report</a>
 
+    <!-- Master Dropdown -->
     <div class="dropdown">
       <div class="dropdown-header" (click)="toggleMaster()">
-        <span class="dropdown-label">Master</span>
+        <span>Master</span>
         <mat-icon class="dropdown-icon" [class.expanded]="masterExpanded">expand_more</mat-icon>
       </div>
-
       <div class="dropdown-menu" *ngIf="masterExpanded">
         <a routerLink="/admin/master/guesthouse" routerLinkActive="active">🏨 Guesthouse</a>
-        <a routerLink="/admin/master/location" routerLinkActive="active">📍 Location</a>
-        <a routerLink="/admin/master/rules" routerLinkActive="active">⚙️ Rules</a>
       </div>
     </div>
   </nav>
 
+  <!-- User Nav -->
   <nav *ngIf="role === 'User'">
     <a routerLink="/user/booking" routerLinkActive="active">Booking</a>
     <a routerLink="/user/my-bookings" routerLinkActive="active">My Bookings</a>

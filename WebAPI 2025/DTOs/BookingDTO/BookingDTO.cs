@@ -7,6 +7,7 @@ namespace WebAPI_2025.DTOs.BookingDTO
         public int BookingID { get; set; }// Used for GET, not saved
         public int UserID { get; set; }
         public int BedID { get; set; }
+        //public string Username { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime CheckoutDate { get; set; }
         public string Purpose { get; set; }

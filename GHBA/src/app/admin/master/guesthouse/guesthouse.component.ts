@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingService } from 'src/app/services/booking.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-guesthouse',
@@ -9,19 +11,20 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./guesthouse.component.css']
 })
 export class GuesthouseComponent implements OnInit {
-  modeForm!: FormGroup;
   detailsForm!: FormGroup;
   configForm!: FormGroup;
-
+  showForm: boolean = false;
   locations: string[] = [];
 
-  constructor(private fb: FormBuilder, private bookingService: BookingService,private notify: NotificationService) {}
+  constructor(
+    private fb: FormBuilder,
+    private bookingService: BookingService,
+    private notify: NotificationService,
+    private router: Router,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
-    this.modeForm = this.fb.group({
-      action: ['new', Validators.required]
-    });
-
     this.detailsForm = this.fb.group({
       name: ['', Validators.required],
       location: ['', Validators.required]
@@ -33,6 +36,10 @@ export class GuesthouseComponent implements OnInit {
     });
 
     this.fetchLocations();
+  }
+
+  toggleForm(): void {
+    this.showForm = !this.showForm;
   }
 
   fetchLocations(): void {
@@ -58,9 +65,20 @@ export class GuesthouseComponent implements OnInit {
     };
 
     this.bookingService.createGuestHouse(payload).subscribe({
-  next: () => this.notify.showSuccess('Guest house created!'),
-  error: () => this.notify.showError('Guest house creation failed')
-});
+      next: () => {
+        this.notify.showSuccess('Guest house created!');
+        this.reloadComponent();
+      },
+      error: () => {
+        this.notify.showError('Guest house creation failed');
+      }
+    });
+  }
 
+  reloadComponent(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 }

@@ -1,68 +1,119 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
+<div class="page-wrapper">
+  <div class="table-container">
+    <h2 class="page-title">Guest House List</h2>
 
-  <!-- Sr. No -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> Sr. No </th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
+    <!-- FILTER BAR -->
+    <div class="filter-container">
+      <mat-form-field appearance="outline" class="clean-field">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Search..." [formControl]="searchControl" />
+      </mat-form-field>
 
-  <!-- Name -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element">
-      <ng-container *ngIf="element.isEditing; else nameView">
-        <input matInput [(ngModel)]="element.editedName" />
+      <mat-form-field appearance="outline" class="clean-field">
+        <mat-label>Location</mat-label>
+        <mat-select [formControl]="locationControl">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let loc of locations" [value]="loc">{{ loc }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="clean-field">
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="statusControl">
+          <mat-option value="">All</mat-option>
+          <mat-option [value]="1">Active</mat-option>
+          <mat-option [value]="0">Inactive</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Compact icon-only refresh button -->
+      <button mat-icon-button class="refresh-button" (click)="resetFilters()" aria-label="Refresh filters">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+
+    <!-- TABLE -->
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
+
+      <!-- Sr. No -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef>Sr. No</th>
+        <td mat-cell *matCellDef="let element">{{ element.position }}</td>
       </ng-container>
-      <ng-template #nameView>{{ element.name }}</ng-template>
-    </td>
-  </ng-container>
 
-  <!-- Location -->
-  <ng-container matColumnDef="location">
-    <th mat-header-cell *matHeaderCellDef> Location </th>
-    <td mat-cell *matCellDef="let element"> {{element.location}} </td>
-  </ng-container>
-
-  <!-- Rooms -->
-  <ng-container matColumnDef="numberOfRooms">
-    <th mat-header-cell *matHeaderCellDef> Rooms </th>
-    <td mat-cell *matCellDef="let element"> {{element.numberOfRooms}} </td>
-  </ng-container>
-
-  <!-- Beds/Room -->
-  <ng-container matColumnDef="bedsPerRoom">
-    <th mat-header-cell *matHeaderCellDef> Beds/Room </th>
-    <td mat-cell *matCellDef="let element"> {{element.bedsPerRoom}} </td>
-  </ng-container>
-
-  <!-- Status -->
-  <ng-container matColumnDef="statusText">
-    <th mat-header-cell *matHeaderCellDef> Status </th>
-    <td mat-cell *matCellDef="let element">
-      <ng-container *ngIf="element.isEditing; else statusView">
-        <button mat-button (click)="toggleStatus(element)">
-          {{ element.editedStatus === 1 ? 'Active' : 'Inactive' }}
-        </button>
+      <!-- Name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.isEditing; else nameView">
+            <input matInput [(ngModel)]="element.editedName" />
+          </ng-container>
+          <ng-template #nameView>{{ element.name }}</ng-template>
+        </td>
       </ng-container>
-      <ng-template #statusView>{{ element.statusText }}</ng-template>
-    </td>
-  </ng-container>
 
-  <!-- Actions -->
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
-    <td mat-cell *matCellDef="let element">
-      <ng-container *ngIf="!element.isEditing">
-        <button mat-stroked-button color="primary" (click)="enableEdit(element)">Edit</button>
-        <button mat-stroked-button color="warn">Delete</button>
+      <!-- Location -->
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>Location</th>
+        <td mat-cell *matCellDef="let element">{{ element.location }}</td>
       </ng-container>
-      <ng-container *ngIf="element.isEditing">
-        <button mat-button color="accent" (click)="saveEdit(element)">Save</button>
-        <button mat-button (click)="cancelEdit(element)">Cancel</button>
-      </ng-container>
-    </td>
-  </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+      <!-- Rooms -->
+      <ng-container matColumnDef="numberOfRooms">
+        <th mat-header-cell *matHeaderCellDef>Rooms</th>
+        <td mat-cell *matCellDef="let element">{{ element.numberOfRooms }}</td>
+      </ng-container>
+
+      <!-- Beds/Room -->
+      <ng-container matColumnDef="bedsPerRoom">
+        <th mat-header-cell *matHeaderCellDef>Beds/Room</th>
+        <td mat-cell *matCellDef="let element">{{ element.bedsPerRoom }}</td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="statusText">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.isEditing; else statusView">
+            <button mat-button (click)="toggleStatus(element)">
+              {{ element.editedStatus === 1 ? 'Active' : 'Inactive' }}
+            </button>
+          </ng-container>
+          <ng-template #statusView>
+            <span [ngClass]="element.status === 1 ? 'status-active' : 'status-inactive'">
+              {{ element.statusText }}
+            </span>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isEditing">
+            <button mat-icon-button color="primary" (click)="enableEdit(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteGuestHouse(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="element.isEditing">
+            <button mat-icon-button color="accent" (click)="saveEdit(element)">
+              <mat-icon>check</mat-icon>
+            </button>
+            <button mat-icon-button (click)="cancelEdit(element)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

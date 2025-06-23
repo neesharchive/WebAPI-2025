@@ -14,11 +14,17 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.username = localStorage.getItem('username') || 'User';
+  const role = localStorage.getItem('userRole');
+  if (role === 'Admin') {
+    this.username = 'AdminNishant';
+  } else {
+    this.username = 'UserNishant'; // or any default name
   }
+}
+
 
   toggleSidebar() {
-    MainComponent.toggleSidebar(); // if static, else use shared service
+    MainComponent.toggleSidebar();
   }
 
   logout(): void {

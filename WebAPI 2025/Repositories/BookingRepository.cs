@@ -7,20 +7,22 @@ namespace WebAPI_2025.Repositories
     public class BookingRepository : IBookingRepository
     {
         private readonly AppDbContext _db;
+
         public BookingRepository(AppDbContext appDbContext)
         {
             _db = appDbContext;
         }
+
         public async Task Create(Booking booking)
         {
             await _db.AddAsync(booking);
             await _db.SaveChangesAsync();
         }
 
-        public void Delete(Booking booking)
+        public async Task Delete(Booking booking)
         {
             _db.Remove(booking);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async Task<List<Booking>> GetAll()
@@ -35,13 +37,13 @@ namespace WebAPI_2025.Repositories
 
         public async Task<List<Booking>> GetByUserID(int id)
         {
-            return await _db.bookings.Where(b=>b.UserID==id).ToListAsync();
+            return await _db.bookings.Where(b => b.UserID == id).ToListAsync();
         }
 
-        public void Update(Booking booking)
+        public async Task Update(Booking booking)
         {
             _db.bookings.Update(booking);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
     }
 }

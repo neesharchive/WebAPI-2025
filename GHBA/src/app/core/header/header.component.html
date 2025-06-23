@@ -13,9 +13,14 @@
   <!-- 👤 Profile section -->
   <mat-icon class="user-icon">person</mat-icon>
   <span class="username">{{ username }}</span>
+  
+<app-notification></app-notification>
 
-  <!-- 🔘 Logout button -->
-  <button mat-icon-button class="logout-circle" (click)="logout()" matTooltip="Logout">
-    <mat-icon>power_settings_new</mat-icon>
-  </button>
+<span class="divider">|</span>
+
+<!-- 🔘 Logout button -->
+<button mat-icon-button class="logout-circle" (click)="logout()" matTooltip="Logout">
+  <mat-icon>power_settings_new</mat-icon>
+</button>
+
 </mat-toolbar>

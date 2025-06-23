@@ -1,23 +1,44 @@
+// src/app/services/notification.service.ts
 import { Injectable } from '@angular/core';
-import { NotifierService } from 'angular-notifier';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class NotificationService {
-  constructor(private notifier: NotifierService) {}
+  private baseUrl = 'https://localhost:7212/api/notification';
+  private refreshSubject = new Subject<void>();
 
-  showSuccess(message: string) {
-    this.notifier.notify('success', message);
+  constructor(private http: HttpClient) {}
+
+  getUserNotifications(userId: number) {
+    return this.http.get(`${this.baseUrl}/user/${userId}`);
   }
 
-  showError(message: string) {
-    this.notifier.notify('error', message);
+  markAsRead(id: number) {
+  return this.http.put(`${this.baseUrl}/mark-as-read/${id}`, {});
+}
+
+  markAllAsRead(userId: number) {
+    return this.http.post(`${this.baseUrl}/mark-all-read/${userId}`, {});
   }
 
-  showInfo(message: string) {
-    this.notifier.notify('info', message);
+  // 🔁 Used to trigger refresh from other components
+  triggerRefresh() {
+    this.refreshSubject.next();
   }
 
-  showWarning(message: string) {
-    this.notifier.notify('warning', message);
+  get refreshNotifier() {
+    return this.refreshSubject.asObservable();
+  }
+
+  // ✅ TEMPORARY: Placeholder methods for toast-style display
+  showSuccess(message: string): void {
+    console.log('✅', message);
+  }
+
+  showError(message: string): void {
+    console.error('❌', message);
   }
 }

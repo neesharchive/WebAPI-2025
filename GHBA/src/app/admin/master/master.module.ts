@@ -12,6 +12,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { GuesthouseListComponent } from './guesthouse-list/guesthouse-list.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 const routes: Routes = [
   { path: '', redirectTo: 'guesthouse', pathMatch: 'full' },
@@ -23,6 +25,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [GuesthouseComponent, GuesthouseListComponent],
   imports: [
+    MatPaginatorModule,
+    MatIconModule,
     MatTableModule,
     CommonModule,
     ReactiveFormsModule,

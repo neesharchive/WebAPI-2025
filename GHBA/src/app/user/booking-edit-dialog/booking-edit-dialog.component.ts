@@ -15,6 +15,7 @@ export class BookingEditDialogComponent implements OnInit {
   rooms: any[] = [];
   beds: any[] = [];
   tomorrow: Date = new Date();
+  selectedGuestHouse: any;
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +33,6 @@ export class BookingEditDialogComponent implements OnInit {
     this.bookingService.getBookingById(this.data.bookingID).subscribe(res => {
       if (res.success) {
         const booking = res.data;
-
         this.editForm.patchValue({
           checkIn: new Date(booking.checkInDate),
           checkOut: new Date(booking.checkoutDate),
@@ -45,6 +45,8 @@ export class BookingEditDialogComponent implements OnInit {
         this.loadGuestHouses(booking.location, booking);
       }
     });
+
+    this.setupCascadingDropdowns();
   }
 
   initForm() {
@@ -61,49 +63,90 @@ export class BookingEditDialogComponent implements OnInit {
     });
   }
 
+  setupCascadingDropdowns() {
+    this.editForm.get('location')?.valueChanges.subscribe(() => {
+      const loc = this.editForm.get('location')?.value;
+      this.loadGuestHouses(loc);
+      this.editForm.patchValue({ guestHouse: null, room: null, bed: null });
+      this.rooms = [];
+      this.beds = [];
+    });
+
+    this.editForm.get('guestHouse')?.valueChanges.subscribe((gh: any) => {
+      this.selectedGuestHouse = gh;
+      this.editForm.patchValue({ room: null, bed: null });
+      this.rooms = [];
+      this.beds = [];
+      this.tryLoadRooms();
+    });
+
+    this.editForm.get('room')?.valueChanges.subscribe(roomId => {
+      const checkIn = this.formatDate(this.editForm.get('checkIn')?.value);
+      const checkOut = this.formatDate(this.editForm.get('checkOut')?.value);
+      if (roomId && checkIn && checkOut) {
+        this.bookingService.getAvailableBeds(roomId, checkIn, checkOut).subscribe(res => {
+          if (res.success) {
+            this.beds = res.data;
+          }
+        });
+      }
+    });
+
+    this.editForm.get('checkIn')?.valueChanges.subscribe(() => this.tryLoadRooms());
+    this.editForm.get('checkOut')?.valueChanges.subscribe(() => this.tryLoadRooms());
+  }
+
   loadLocations() {
     this.bookingService.getLocations().subscribe(res => {
       if (res.success) this.locations = res.data;
     });
   }
 
-  loadGuestHouses(location: string, booking: any) {
+  loadGuestHouses(location: string, booking?: any) {
     this.bookingService.getGuestHousesByLocation(location).subscribe(res => {
       if (res.success) {
         this.guestHouses = res.data;
-        const matchedGH = this.guestHouses.find(g => g.name === booking.guestHouseName);
-        if (matchedGH) {
-          this.editForm.get('guestHouse')?.setValue(matchedGH);
-          this.loadRooms(matchedGH.guestHouseID, booking);
+        if (booking) {
+          const matchedGH = this.guestHouses.find(g => g.name === booking.guestHouseName);
+          if (matchedGH) {
+            this.editForm.get('guestHouse')?.setValue(matchedGH);
+            this.tryLoadRooms(booking);
+          }
         }
       }
     });
   }
 
-  loadRooms(guestHouseId: number, booking: any) {
-    this.bookingService.getRooms(guestHouseId).subscribe(res => {
-      if (res.success) {
-        this.rooms = res.data;
-        const matchedRoom = this.rooms.find(r => r.roomNumber === booking.roomNumber);
-        if (matchedRoom) {
-          this.editForm.get('room')?.setValue(matchedRoom.roomID);
-          this.loadBeds(matchedRoom.roomID, booking);
+  tryLoadRooms(booking?: any) {
+    const gh = this.editForm.get('guestHouse')?.value;
+    const guestHouseId = gh?.guestHouseID;
+    const checkIn = this.formatDate(this.editForm.get('checkIn')?.value);
+    const checkOut = this.formatDate(this.editForm.get('checkOut')?.value);
+
+    if (guestHouseId && checkIn && checkOut) {
+      this.bookingService.getAvailableRooms(guestHouseId, checkIn, checkOut).subscribe(roomRes => {
+        if (roomRes.success && roomRes.data?.length) {
+          this.rooms = roomRes.data;
+
+          if (booking) {
+            const matchedRoom = this.rooms.find(r => r.roomNumber === booking.roomNumber);
+            if (matchedRoom) {
+              this.editForm.get('room')?.setValue(matchedRoom.roomID);
+              this.bookingService.getAvailableBeds(matchedRoom.roomID, checkIn, checkOut).subscribe(bedRes => {
+                if (bedRes.success) {
+                  this.beds = bedRes.data;
+                  this.editForm.get('bed')?.setValue(booking.bedID);
+                }
+              });
+            }
+          }
         }
-      }
-    });
+      });
+    }
   }
 
-  loadBeds(roomId: number, booking: any) {
-    this.bookingService.getBeds(roomId).subscribe(res => {
-      if (res.success) {
-        this.beds = res.data;
-        this.editForm.get('bed')?.setValue(booking.bedID);
-      }
-    });
-  }
-
-  compareById(opt: any, val: any): boolean {
-    return opt?.guestHouseID === val?.guestHouseID || opt === val;
+  formatDate(date: any): string | null {
+    return date ? new Date(date).toISOString().split('T')[0] : null;
   }
 
   onUpdate() {
@@ -122,6 +165,9 @@ export class BookingEditDialogComponent implements OnInit {
 
     this.dialogRef.close(payload);
   }
+compareById(a: any, b: any): boolean {
+  return a && b && a.guestHouseID === b.guestHouseID;
+}
 
   onCancel() {
     this.dialogRef.close();

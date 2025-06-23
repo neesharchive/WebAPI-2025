@@ -1,0 +1,32 @@
+<div class="notification-wrapper">
+  <button mat-icon-button
+          disableRipple
+          class="notification-bell"
+          [matBadge]="unreadCount > 0 ? unreadCount : null"
+          matBadgeColor="warn"
+          matBadgePosition="above after"
+          [matBadgeHidden]="unreadCount <= 0"
+          (click)="toggleDropdown()">
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  <!-- Dropdown -->
+  <div *ngIf="dropdownOpen" class="notification-dropdown">
+    <div class="notification-header">
+      <span>Notifications</span>
+      <button mat-icon-button (click)="toggleDropdown()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="notifications.length === 0" class="empty">No notifications</div>
+
+    <div *ngFor="let n of notifications" class="notification-item" [ngClass]="{ 'unread': !n.isRead }">
+      <div class="notification-content" (click)="handleNotificationClick(n)">
+        <div class="message">{{ n.message }}</div>
+        <div class="timestamp">{{ n.timestamp | date:'short' }}</div>
+        <div class="dismiss" (click)="dismissNotification($event, n)">×</div>
+      </div>
+    </div>
+  </div>
+</div>

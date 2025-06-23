@@ -13,7 +13,9 @@ namespace WebAPI_2025.Data
         public DbSet<Room> rooms { get; set; }
         public DbSet<Bed> beds { get; set; }
         public DbSet<Booking> bookings { get; set; }
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
 
+        public DbSet<Notification> notification { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -51,7 +53,7 @@ namespace WebAPI_2025.Data
                 UserID = 1,
                 UserName = "admin",
                 Email = "nishantbhatt393@gmail.com",
-                role = Enums.Roles.Admin
+                role = Roles.Admin
             };
             adminUser.Password = hasher.HashPassword(adminUser, "admin123");
 
@@ -60,11 +62,13 @@ namespace WebAPI_2025.Data
                 UserID = 2,
                 UserName = "user",
                 Email = "nab5996@psu.com",
-                role = Enums.Roles.User
+                role = Roles.User
             };
             normalUser.Password = hasher.HashPassword(normalUser, "user123");
 
             modelBuilder.Entity<User>().HasData(adminUser, normalUser);
+
+
         }
 
 

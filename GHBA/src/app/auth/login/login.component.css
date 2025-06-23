@@ -1,67 +1,115 @@
+/* Wrapper to center the card */
 .login-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #b6ccda; 
+  padding: 12px;
+  background: linear-gradient(145deg, #dbe8f5, #b6ccda);
 }
 
+/* Compact, centered card */
 .login-card {
   width: 100%;
-  max-width: 420px;
-  padding: 32px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(48, 101, 151, 0.15);
+  max-width: 360px;
+  padding: 24px 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.logo-area {
+/* Logo styling */
+.logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 2px;
-
-  .logo-img {
-    height: 150px;
-    object-fit: contain;
-    max-width: 180px;
-  }
+  margin-bottom: 8px;
 }
 
+.logo-img {
+  height: 100px;
+  max-width: 140px;
+  object-fit: contain;
+}
+
+/* Headings */
 .title {
   text-align: center;
-  margin-bottom: 24px;
-  color: #2a2f36; 
+  font-size: 20px;
   font-weight: 600;
+  color: #2a2f36;
+  margin-bottom: 16px;
 }
 
+.subtitle {
+  font-size: 13px;
+  text-align: center;
+  color: #555;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Input fields */
 .full-width {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
-.login-btn {
+/* Compact buttons */
+.action-btn {
   width: 100%;
-  background-color: #f96167 !important; 
-  color: #ffffff;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #e8575e !important; 
-  }
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #f96167 !important;
+  color: white !important;
+  transition: background-color 0.2s ease;
 }
 
+.action-btn:hover {
+  background-color: #e8575e !important;
+}
+
+/* Forgot password link */
 .forgot-link {
   text-align: right;
-  margin: 8px 0 16px;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
 
 .forgot-link a {
-  font-size: 14px;
   color: #1e88e5;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .forgot-link a:hover {
   text-decoration: underline;
+}
+
+/* Back link */
+.back-link {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 400px) {
+  .login-card {
+    padding: 20px 16px;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .logo-img {
+    height: 80px;
+  }
+
+  .action-btn {
+    font-size: 13px;
+    padding: 7px 0;
+  }
 }

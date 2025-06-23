@@ -9,8 +9,8 @@ namespace WebAPI_2025.Repositories
         public Task<List<Booking>> GetByUserID(int id);
         public Task<Booking> GetByID(int id);
         public Task<List<Booking>> GetAll();
-        public void Update(Booking booking);
-        public void Delete(Booking booking);
+        public Task Update(Booking booking);
+        public Task Delete(Booking booking);
 
     }
 }

@@ -6,6 +6,7 @@ import { ManageBookingsComponent } from './manage-bookings/manage-bookings.compo
 import { GuesthouseComponent } from './master/guesthouse/guesthouse.component';
 import { GuesthouseListComponent } from './master/guesthouse-list/guesthouse-list.component';
 import { BookingsListComponent } from './bookings-list/bookings-list.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -14,7 +15,9 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'pending-requests', component: ManageBookingsComponent },
       { path: 'master', loadChildren: () => import('./master/master.module').then(m => m.MasterModule) },
-      {path:'report', component:BookingsListComponent}
+      {path:'booking-report', component:BookingsListComponent},
+      
+
     ]
   }
 

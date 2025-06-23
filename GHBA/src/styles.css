@@ -1,4 +1,91 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --header-height: 64px;
+  --footer-height: 40px;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 11;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  background-color: #b6ccda;
+  overflow: hidden; /* prevent default scrollbars unless triggered inside */
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+* {
+  box-sizing: border-box;
+}
+
+/* Fixed layout wrapper under header */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Push layout below header */
+.layout-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow: hidden;
+}
+
+/* Sidenav layout (mat-sidenav-content wrapper) */
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: calc(100vh - var(--header-height));
+}
+
+/* Sidebar styles */
+.sidenav {
+  width: 240px;
+  background-color: #1e293b;
+  color: white;
+  padding: 16px 12px;
+  transition: width 0.3s ease;
+}
+
+/* Topbar styles */
+.topbar {
+  height: var(--header-height);
+  background-color: #1a89c0;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Main content wrapper (below header) */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  background-color: #f8fafc;
+}
+
+
+/* Footer */
+.footer {
+  height: var(--footer-height);
+  background-color: #e2e8f0;
+  text-align: center;
+  font-size: 13px;
+  color: #334155;
+  border-top: 1px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

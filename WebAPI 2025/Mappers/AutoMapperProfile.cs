@@ -6,6 +6,7 @@ using WebAPI_2025.DTOs.BedDTO;
 using WebAPI_2025.DTOs.RoomDTO;
 using WebAPI_2025.DTOs.BookingDTO;
 using WebAPI_2025.DTOs.UserDTO;
+using WebAPI_2025.DTOs.NotificationDTO;
 namespace WebAPI_2025.Mappers
 {
     public class AutoMapperProfile:Profile
@@ -16,7 +17,7 @@ namespace WebAPI_2025.Mappers
             CreateMap<GuestHouse, GetGuestHouseDTO>();
             CreateMap<UpdateGuestHouseDTO, GuestHouse>();
             CreateMap<Bed, GetAvailableBedDTO>();
-
+            CreateMap<Notification,NotificationDTO>();
             CreateMap<Room, GetAvailableRoomDTO>();
             CreateMap<BookingDTO, Booking>()
                 .ForMember(dest => dest.BookingID, opt => opt.Ignore())

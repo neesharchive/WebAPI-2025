@@ -25,13 +25,13 @@ export class BookingService {
     return this.http.get<APIResponse<GuestHouse[]>>(`${this.apiUrl}/guesthouse/by-location/${location}`);
   }
   updateGuestHouse(id: number, name: string, status: number) {
-  const payload = {
-    guestHouseID: id,
-    name: name,
-    status: status
-  };
-  return this.http.put<APIResponse<GuestHouse>>(`${this.apiUrl}/guesthouse/${id}`, payload);
-}
+    const payload = {
+      guestHouseID: id,
+      name: name,
+      status: status
+    };
+    return this.http.put<APIResponse<GuestHouse>>(`${this.apiUrl}/guesthouse/${id}`, payload);
+  }
 
 
   getRooms(guestHouseId: number) {
@@ -75,13 +75,19 @@ export class BookingService {
   deleteBooking(id: number) {
     return this.http.delete(`${this.apiUrl}/booking/${id}`);
   }
+  deleteGuestHouse(guestHouseID: number) {
+    return this.http.delete(`${this.apiUrl}/guesthouse/${guestHouseID}`);
+  }
+
   updateBooking(updatedBooking: any) {
     return this.http.put(`${this.apiUrl}/booking/${updatedBooking.bookingID}`, updatedBooking);
   }
+
   getBookingById(id: number) {
     return this.http.get<APIResponse<Booking>>(`${this.apiUrl}/booking/${id}`);
   }
   createGuestHouse(payload: any) {
     return this.http.post<APIResponse<any>>(`${this.apiUrl}/guesthouse`, payload);
   }
+
 }

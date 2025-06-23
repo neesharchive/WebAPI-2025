@@ -20,7 +20,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BookingsListComponent } from './bookings-list/bookings-list.component';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,8 @@ import { BookingsListComponent } from './bookings-list/bookings-list.component';
     BookingsListComponent,
   ],
   imports: [
+    MatSelectModule,
+    MatOptionModule,
     ReactiveFormsModule,
     MatTableModule,
     MatPaginatorModule,

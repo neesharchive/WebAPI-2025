@@ -9,9 +9,9 @@ namespace WebAPI_2025.Services
         public Task Create(BookingDTO booking);
         public Task<List<BookingDTO>> GetBookingByUserId(int Uid);
         public Task<BookingDTO?> GetById(int id);
-        public void Delete(int id);
+        public Task Delete(int id);
         public Task<List<BookingDTO>> GetAll();
-        public void Update(int id, BookingDTO booking);
+        public Task Update(int id, BookingUpdateDTO booking);
         Task<bool> UpdateStatus(int bookingId, BookingStatus status);
 
     }

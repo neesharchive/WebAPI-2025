@@ -16,25 +16,34 @@ export class AuthService {
   }
 
   saveToken(token: string, role: string, userID?: number) {
-    localStorage.setItem('jwtToken', token);
-    localStorage.setItem('userRole', role);
+  localStorage.setItem('jwtToken', token);
+  localStorage.setItem('userRole', role);
 
-    if (userID !== undefined) {
-      localStorage.setItem('userId', userID.toString());
-    } else {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const idFromToken = payload.UserID || payload.userId || payload.sub;
-        if (idFromToken) {
-          localStorage.setItem('userId', idFromToken.toString());
-        } else {
-          console.warn('UserID not found in token payload.');
-        }
-      } catch (err) {
-        console.error('Failed to decode token:', err);
+  // // ✅ Save static username based on role
+  // if (role.toLowerCase() === 'admin') {
+  //   localStorage.setItem('username', 'admin');
+  // } else {
+  //   localStorage.setItem('username', 'user');
+  // }
+
+  // ✅ Save userId
+  if (userID !== undefined) {
+    localStorage.setItem('userId', userID.toString());
+  } else {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const idFromToken = payload.UserID || payload.userId || payload.sub;
+      if (idFromToken) {
+        localStorage.setItem('userId', idFromToken.toString());
+      } else {
+        console.warn('UserID not found in token payload.');
       }
+    } catch (err) {
+      console.error('Failed to decode token:', err);
     }
   }
+}
+
 
   getToken(): string | null {
     return localStorage.getItem('jwtToken');

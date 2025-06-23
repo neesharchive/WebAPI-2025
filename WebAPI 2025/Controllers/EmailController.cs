@@ -15,16 +15,16 @@ namespace WebAPI_2025.Controllers
         }
 
         [HttpGet("test-email")]
-        public async Task<IActionResult> TestEmail()
+        public IActionResult TestEmail()
         {
             try
             {
-                await _emailService.SendEmailAsync("your-email@gmail.com", "Test Email", "This is a test from the Guest House system.");
-                return Ok("Email sent successfully.");
+                _emailService.SendEmailInBackground("your-email@gmail.com", "Test Email", "This is a test from the Guest House system.");
+                return Ok("Email triggered successfully (sent in background).");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Email failed to send: {ex.Message}");
+                return StatusCode(500, $"Failed to trigger email: {ex.Message}");
             }
         }
     }

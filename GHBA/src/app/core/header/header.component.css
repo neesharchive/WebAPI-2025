@@ -1,7 +1,7 @@
-/* Fixed top navbar */
+/* Topbar container */
 .topbar {
   height: 64px;
-  background-color: #1a89c0; /* same blue as rest of theme */
+  background-color: #1a89c0;
   color: white;
   display: flex;
   align-items: center;
@@ -14,53 +14,70 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* App title text */
+/* Title */
 .title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-left: 12px;
-}
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+  }
 
-/* Spacer between title and user avatar */
+/* Spacer pushes everything else to the right */
 .spacer {
   flex: 1;
 }
 
-
-
-/* Profile image */
+/* Avatar */
 .avatar {
-  height: 28px;
-  width: 28px;
+  height: 32px;
+  width: 32px;
   border-radius: 50%;
-  margin-right: 6px;
-  vertical-align: middle;
+  margin-right: 8px;
+  object-fit: cover;
 }
 
-/* Username text */
+/* Username */
 .username {
   font-weight: 500;
-  font-size: 14px;
-  margin-right: 12px;
-  color: white;
-  vertical-align: middle;
+  font-size: 15px;
+  margin-right: 16px;
 }
 
-/* Logout circular button */
+/* Notification bell */
+.notification-container {
+  position: relative;
+  margin-right: 16px;
+}
+
+/* Notification badge fine-tune */
+.notification-container .mat-badge-content {
+  top: 8px !important;
+  right: 8px !important;
+  transform: scale(0.85); /* optional smaller badge */
+}
+
+/* Divider line */
+.divider {
+  margin: 0 12px;
+  color: white;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* Logout button */
 .logout-circle {
   background-color: #5f51ef;
   color: white;
   border-radius: 50%;
   padding: 6px;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
-  margin-left: 4px;
 }
 
 .logout-circle:hover {
   background-color: #463cd1;
 }
+

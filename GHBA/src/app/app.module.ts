@@ -8,12 +8,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotifierModule } from 'angular-notifier';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CoreModule } from './core/core.module';
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
+
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    CoreModule,
     MatIconModule,
     MatTooltipModule,
     BrowserModule,
@@ -33,6 +37,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         stacking: 4
       }
     }),
+    IndicatorsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

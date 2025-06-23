@@ -11,4 +11,6 @@ export interface Booking {
   bedNumber: number;
   guestHouseName: string;
   location: string;
+  position?:number;
+  userName?: string;  
 }

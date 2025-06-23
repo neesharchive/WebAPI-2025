@@ -4,6 +4,8 @@ import { BookingService } from 'src/app/services/booking.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { forkJoin, of } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { BookingStatusDialogComponent } from 'src/app/core/booking-status-dialog/booking-status-dialog.component';
 
 @Component({
   selector: 'app-user-booking',
@@ -22,7 +24,8 @@ export class UserBookingComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private bookingService: BookingService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
     this.tomorrow.setDate(this.tomorrow.getDate() + 1);
     this.bookingForm = this.fb.group({
@@ -189,55 +192,77 @@ export class UserBookingComponent implements OnInit {
       }
     });
   }
+onSubmit() {
+  console.log('[DEBUG] Booking form submitted');
 
-  onSubmit() {
-    console.log('[DEBUG] Booking form submitted');
-    if (this.bookingForm.invalid) {
-      console.warn('[DEBUG] Booking form invalid:', this.bookingForm.value);
-      return;
-    }
-
-    const userId = this.getUserIdFromToken();
-    if (!userId) {
-      console.warn('[DEBUG] User ID could not be extracted from localStorage');
-      return;
-    }
-
-    const form = this.bookingForm.value;
-    const payload = {
-      userID: userId,
-      bedID: form.bed,
-      checkInDate: form.dates.checkIn,
-      checkoutDate: form.dates.checkOut,
-      purpose: form.purpose,
-      gender: form.gender === 'Male' ? 0 : 1,
-      location: form.location,
-      guestHouseName: form.guestHouse?.name || ''
-    };
-
-    console.log('[DEBUG] Booking Payload:', payload);
-
-    this.bookingService.createBooking(payload).subscribe({
-      next: (res) => {
-        console.log('[DEBUG] Create Booking Response:', res);
-        if (res.success) {
-          alert('Booking successful!');
-          this.bookingForm.reset();
-          this.resetFormFields();
-        } else {
-          alert('Booking failed: ' + res.message);
-        }
-      },
-      error: (err) => {
-        console.error('[ERROR] Booking failed:', err);
-        if (err.error?.errors) {
-          console.table(err.error.errors);
-        } else {
-          alert('Booking failed: Unexpected error');
-        }
-      }
-    });
+  if (this.bookingForm.invalid) {
+    console.warn('[DEBUG] Booking form invalid:', this.bookingForm.value);
+    return;
   }
+
+  const userId = this.getUserIdFromToken();
+  if (!userId) {
+    console.warn('[DEBUG] User ID could not be extracted from localStorage');
+    return;
+  }
+
+  const form = this.bookingForm.value;
+  const payload = {
+    userID: userId,
+    bedID: form.bed,
+    checkInDate: form.dates.checkIn,
+    checkoutDate: form.dates.checkOut,
+    purpose: form.purpose,
+    gender: form.gender === 'Male' ? 0 : 1,
+    location: form.location,
+    guestHouseName: form.guestHouse?.name || ''
+  };
+
+  console.log('[DEBUG] Booking Payload:', payload);
+
+  this.bookingService.createBooking(payload).subscribe({
+    next: (res) => {
+      console.log('[DEBUG] Create Booking Response:', res);
+
+      const dialogRef = this.dialog.open(BookingStatusDialogComponent, {
+        data: {
+          success: res.success,
+          message: res.success
+            ? 'Booking request registered!'
+            : res.message || 'Booking failed.'
+        },
+        panelClass: 'custom-dialog-panel',
+        disableClose: true
+      });
+
+      setTimeout(() => dialogRef.close(), 2000);
+
+      if (res.success) {
+        this.bookingForm.reset();
+        this.resetFormFields();
+      }
+    },
+    error: (err) => {
+      console.error('[ERROR] Booking failed:', err);
+
+      const dialogRef = this.dialog.open(BookingStatusDialogComponent, {
+        data: {
+          success: false,
+          message: 'Booking failed: Unexpected error'
+        },
+        panelClass: 'custom-dialog-panel',
+        disableClose: true
+      });
+
+      setTimeout(() => dialogRef.close(), 2000);
+
+      if (err.error?.errors) {
+        console.table(err.error.errors);
+      }
+    }
+  });
+}
+
 
   onCancel() {
     this.bookingForm.reset();

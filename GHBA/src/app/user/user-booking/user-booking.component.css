@@ -1,26 +1,37 @@
+/* Wrapper to fill available height inside main-content */
 .booking-wrapper {
-  padding: 0 40px;
-  margin-top: -20px; /* remove gap under navbar */
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #b6ccda;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
+
+/* Make booking card compact but readable */
 .booking-card {
-  padding: 24px 32px;
+  width: 100%;
+  max-width: 700px;
+  padding: 16px 20px;
+  background-color: #ffffff;
   border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Form spacing */
 .form-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 24px;
-  color: #1e293b;
+  margin-bottom: 20px;
 }
 
 .booking-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px 24px;
+  gap: 7px 20px;
 }
 
 .mat-form-field {
@@ -30,39 +41,41 @@
 
 input.mat-input-element,
 .mat-select-trigger {
-  height: 40px;
+  height: 36px;
   font-size: 14px;
   padding: 4px 8px;
 }
 
-/* Make date range input compact */
+/* Smaller date input */
 mat-date-range-input input {
-  height: 20px;
+  height: 18px;
+}
+
+/* Grouped fields */
+.mat-radio-group, .mat-checkbox, .form-buttons {
+  grid-column: span 2;
 }
 
 .mat-radio-group {
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  grid-column: span 2;
-  margin-top: 8px;
+  gap: 12px;
 }
 
 .mat-checkbox {
-  margin-top: 8px;
-  grid-column: span 2;
+  margin-top: 6px;
 }
 
 .form-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
   margin-top: 16px;
-  grid-column: span 2;
+  gap: 10px;
 }
 
 button {
-  min-width: 100px;
-  height: 36px;
-  font-size: 14px;
+  min-width: 90px;
+  height: 34px;
+  font-size: 13px;
 }

@@ -115,6 +115,35 @@ namespace WebAPI_2025.Migrations
                     b.ToTable("guestHouses");
                 });
 
+            modelBuilder.Entity("WebAPI_2025.Models.Entities.Notification", b =>
+                {
+                    b.Property<int>("NotificationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationID"));
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TargetRole")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationID");
+
+                    b.ToTable("notification");
+                });
+
             modelBuilder.Entity("WebAPI_2025.Models.Entities.Room", b =>
                 {
                     b.Property<int>("RoomID")
@@ -180,7 +209,7 @@ namespace WebAPI_2025.Migrations
                         {
                             UserID = 1,
                             Email = "nishantbhatt393@gmail.com",
-                            Password = "AQAAAAIAAYagAAAAEN4hCNSHhAgdKMVT+960ybn0Btz6Fz02D7R+IfeB3PQEFnc9Ci1Iv64VhllhD0mWhg==",
+                            Password = "AQAAAAIAAYagAAAAEF0z0c+yi+100q6/GfscHM3ldGr7q25qrTv8bHdB0/Qx9d29w5j2wJFkCc8YjCk93g==",
                             UserName = "admin",
                             role = 1
                         },
@@ -188,7 +217,7 @@ namespace WebAPI_2025.Migrations
                         {
                             UserID = 2,
                             Email = "nab5996@psu.com",
-                            Password = "AQAAAAIAAYagAAAAEEwdnRXAxtsTvQ7DCLDrUBaGnWf9lHPhOR7yJm/39Eqh156wtCS9b4pe9HkoGG143g==",
+                            Password = "AQAAAAIAAYagAAAAEI1FyTqXZjtDpszd9fwV5PgukZ5PPTKyusa6NOMOkROqD+lOv1q8CKqekPbkzaGHYQ==",
                             UserName = "user",
                             role = 2
                         });

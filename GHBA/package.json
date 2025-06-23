@@ -20,10 +20,17 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@progress/kendo-angular-indicators": "^19.1.0",
     "angular-notifier": "^14.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.13.0",
+    "@progress/kendo-licensing": "^1.5.0",
+    "@progress/kendo-angular-common": "19.1.0",
+    "@progress/kendo-angular-intl": "19.1.0",
+    "@progress/kendo-angular-l10n": "19.1.0",
+    "@angular/localize": "^16.2.0",
+    "@progress/kendo-theme-default": "11.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",
